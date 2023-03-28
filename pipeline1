@@ -1,0 +1,58 @@
+arameters:
+  - name: environment
+    displayName: environment to deploy
+    type: string
+    default: pft
+    values:
+      - pft
+      - dev
+      - pre
+      - prod
+pool:
+  vmImage: 'ubuntu-latest'
+
+# Stages starts
+stages:
+  - stage: Key
+    condition: and(succeeded(), eq(variables.ndeployment, 'true'))
+    displayName: 'trainer information'
+    #dependsOn: []
+    jobs:
+      - job: trainer_1
+        steps:
+          - bash: |
+              echo "trainer is" ${{ variables.ntrainer }}
+              echo "session_duration is" ${{ variables.nsession_duration }}
+            name: trainer_session
+
+          - bash:
+              echo "deployment boolean value is" ${{ variables.ndeployment }}
+            name: key_Value_boolean
+      - job: trainer_2
+        steps:
+          - bash: |
+              echo "pwd"
+              pwd
+              ls
+              echo "trainer is" ${{ variables.ntrainer }}
+              echo "session_duration is" ${{ variables.nsession_duration }}
+              echo "lunch break" ${{ variables.lunchbreak }}
+            name: key_Value_variable2
+
+          - bash: |
+              echo "deployment boolean value is" ${{ variables.ndeployment }}
+              echo "lunch break" ${{ variables.lunchbreak }}
+            name: key_Value_boolean_lunchbrk
+  - stage: Key2
+    condition: and(succeeded(), eq(variables.ndeployment, 'true'))
+    displayName: 'Key_Value_Example2'
+    #dependsOn: []
+    jobs:
+      - job: trainer_3
+        steps:
+          - bash: |
+              echo "trainer is" ${{ variables.ntrainer }}1.yaml
+
+              echo "session_duration is" ${{ variables.nsession_duration }}
+              echo "lunch break" ${{ variables.lunchbreak }}
+            name: key_Value_variable3
